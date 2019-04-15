@@ -12,7 +12,10 @@
 >2.3 跳帽  
 >>2.3.1 跳帽描述  
 >>2.3.2 启动选择  
->>2.3.3
+
+>2.4 扩展接口定义  
+>2.5 JTAG连接  
+>2.6 按钮和LED灯  
   
 ### **3、第一次使用**  
 >3.1 使用环境  
@@ -120,4 +123,67 @@ JTAG调试最少需要连接4线，连接方式如下表：
 | LED3 | GPIOA1 | low for light_on, high for light_off |  
 
 
- 
+----  
+## 3. 第一次使用  
+在这一章节，我们将开始正式使用IVY5661 96boards开发板。  
+### 3.1 使用环境  
+目前，我们的所有工作将会在Linux上完成，我们推荐使用Debian/Ubuntu主机（本操作手册上的所有工作将会在Debian 9 Stretch上完成）。  
+Debian系统下载地址：[https://www.debian.org/CD/](https://www.debian.org/CD/)  
+#### a. 完成安装操作系统  
+#### b. 将系统保持最新  
+`$ sudo apt update`  
+`$ sudo apt upgrade`  
+#### c. 安装dloader  
+`$ wget https://github.com/unisoc/dloader/releases/download/unisoc-v0.3.1/dloader_0.3.1-1_amd64.deb`  
+`$ sudo dpkg -i dloader_*.deb`  
+***你也可以自己编译dloader***  
+`$ git clone https://github.com/unisoc/dloader.git`  
+`$ ./configure`  
+`$ make`  
+`$ sudo make install`  
+### 3.2 下载二进制文件  
+下载地址：[https://github.com/96boards/documentation/tree/master/iot/ivy5661/downloads](https://github.com/96boards/documentation/tree/master/iot/ivy5661/downloads)  
+### 3.3 二进制文件构成  
+- `fdl*.bin` - Flash downloader  
+- `mcuboot-pubkey*.bin` - Bootloader  
+- `zephyr-signed-ota*.bin` - Kernel  
+- `wcn-modem*` - WCN Modem  
+
+### 3.4 如何烧写二进制文件  
+#### a. 使用MircroUSB - USB-TypeA的线缆将IVY5661与PC相连。并关闭PC上所有串口工具以释放设备。  
+#### b. 进入下载完二进制的目录，并解压。 
+```
+$ tar -jxvf prebuild-repeater.tar.bz2  
+$ cd prebuild-repeater.tar.bz2  
+$ ./update_fw.sh  
+```
+
+---  
+## 4. 编译  
+### 4.1 硬件环境  
+我们建议使用>四核+>4GB RAM以上PC进行编译。  
+### 4.2 软件环境  
+**OS:**我们推荐使用Debian/Ubuntu主机（本操作手册上的所有工作将会在Debian 9 Stretch上完成）。 
+Debian系统下载地址：[https://www.debian.org/CD/](https://www.debian.org/CD/)  
+#### a. 更新系统至最新  
+```
+$ sudo apt update  
+$ sudo apt upgrade  
+```  
+
+#### b. 安装必要依赖和软件 
+```
+sudo apt-get install --no-install-recommends git cmake ninja-build gperf \
+  ccache dfu-util device-tree-compiler wget \
+  python3-pip python3-setuptools python3-wheel xz-utils file make gcc \
+  gcc-multilib
+```  
+#### c. 安装Zephyr SDK  
+```
+$ wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.10.0/zephyr-sdk-0.10.0-setup.run
+$ sh zephyr-sdk-0.10.0-setup.run
+```  
+
+
+### 4.3 代码下载  
+### 4.4 编译命令  
